@@ -1,4 +1,5 @@
 open Gfile
+open Tools
     
 let () =
 
@@ -27,9 +28,17 @@ let () =
 
   (* Open file *)
   let graph = from_file infile in
+  let graph2 = clone_nodes graph in
+  let graph2 = gmap graph2 int_of_string in
+  let graph3 = gmap graph2 (fun x -> x+1) in
+  let graph4 = add_arc graph3 0 1 1 in
+  let graph_str = gmap graph4 string_of_int in
 
   (* Rewrite the graph that has been read. *)
-  let () = write_file outfile graph in
+  let () = write_file outfile graph_str in
+
+  (* output the dot format of graph *)
+  let () = write_dot "graph.dot" graph in
 
   ()
 

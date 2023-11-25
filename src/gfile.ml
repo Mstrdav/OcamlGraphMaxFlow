@@ -112,3 +112,23 @@ let from_file path =
   close_in infile ;
   final_graph
   
+(* Export in graphviz dot format *)
+let write_dot path graph =
+
+  (* Open a write-file. *)
+  let ff = open_out path in
+
+  (* Write in this file. *)
+  fprintf ff "digraph G {\n" ;
+
+  (* Write all nodes *)
+  n_iter_sorted graph (fun id -> fprintf ff "  %d [label=\"%d\"];\n" id id) ;
+  fprintf ff "\n" ;
+
+  (* Write all arcs *)
+  e_iter graph (fun arc -> fprintf ff "  %d -> %d [label=\"%s\"];\n" arc.src arc.tgt arc.lbl) ;
+  
+  fprintf ff "}\n" ;
+  
+  close_out ff ;
+  ()
